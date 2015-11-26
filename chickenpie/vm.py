@@ -77,7 +77,10 @@ class Machine(object):
 
             #self.push(source[addr])
             try:
-                self.push(source[addr])
+                if source is self.stack and addr == 1:
+                    self.push(self.get_input())
+                else:
+                    self.push(source[addr])
             except (IndexError, TypeError):
                 self.push(None)
 
