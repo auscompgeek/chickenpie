@@ -1,4 +1,4 @@
-def parse(prog: str):
+def parse(prog):
     """Parse a Chicken program into bytecode."""
 
     opcodes = []

@@ -23,5 +23,5 @@ names = {
 }
 
 
-def get_name(opcode: int):
+def get_name(opcode):
     return names[opcode] if opcode in names else 'push %d' % (opcode - 10)
