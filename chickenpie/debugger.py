@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+
+from __future__ import print_function
 
 import sys
 import traceback
@@ -17,11 +19,13 @@ def boot(argv=sys.argv):
 
 def input_reader():
     EXIT_COMMANDS = 'bye', 'exit', 'quit', 'q'
+    read = raw_input if sys.version_info[0] < 3 else input  # noqa
+
     try:
-        inp = input('> ')
+        inp = read('> ')
         while inp not in EXIT_COMMANDS:
             yield inp
-            inp = input('> ')
+            inp = read('> ')
 
     except EOFError:
         print('quit', file=sys.stderr)

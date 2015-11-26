@@ -1,6 +1,11 @@
 from . import opcodes
 from .parser import parse
 
+try:
+    input = raw_input
+except NameError:
+    pass
+
 
 class Machine(object):
     """A Chicken VM.
