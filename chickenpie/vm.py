@@ -11,10 +11,10 @@ class Machine(object):
     - stack
     """
 
-    ip = None
+    ip = None  # type: Optional[int]
     sp = -1
 
-    def __init__(self, input_: str = None, code: str = None):
+    def __init__(self, input_=None, code=None):
         self.stack = []
         self.push(self.stack)
         self.push(input_)
@@ -32,7 +32,7 @@ class Machine(object):
 
     next = __next__
 
-    def exec_op(self, opcode: int):
+    def exec_op(self, opcode):
         """Execute an opcode."""
 
         if opcode == opcodes.CHICKEN:
@@ -113,18 +113,19 @@ class Machine(object):
         """Check whether we have finished executing."""
         return self.ip >= len(self.stack) or not self.peek()
 
-    def load_file(self, filename: str):
+    def load_file(self, filename):
         """Load a Chicken program from a file."""
 
         with open(filename) as f:
             self.load_str(f.read())
 
-    def load_input(self, inp: str):
+    def load_input(self, inp):
         """Load input from a string."""
         self.stack[1] = inp
 
-    def load_str(self, code: str):
+    def load_str(self, code):
         """Load a Chicken program from a string."""
+
         bytecode = parse(code)
         self.stack += bytecode
         self.sp = len(self.stack)
@@ -135,14 +136,14 @@ class Machine(object):
         """Get the top value on the stack."""
         return self.stack[self.sp]
 
-    def next_op(self) -> int:
+    def next_op(self):
         """Get the next instruction, advancing the instruction pointer."""
 
         opcode = self.peek()
         self.ip += 1
         return opcode
 
-    def peek(self) -> int:
+    def peek(self):
         """Get the next instruction."""
         return self.stack[self.ip]
 
@@ -179,7 +180,8 @@ class Machine(object):
     def step(self):
         """Execute the next instruction.
 
-        Returns the advanced IP and the last executed opcode."""
+        Returns the advanced IP and the last executed opcode.
+        """
 
         if not self.has_loaded():
             raise RuntimeError('No Chicken program has been loaded.')
