@@ -16,15 +16,18 @@ class Machine(object):
     - stack
     """
 
-    ip = None  # type: Optional[int]
+    ip = None  # type: int
     sp = -1
 
-    def __init__(self, input_=None, code=None):
+    def __init__(self, input_=None, code=None, bbq_compat=False):
         self.stack = []
         self.push(self.stack)
         self.push(input_)
+
         if code:
             self.load_str(code)
+
+        self.bbq_compat = bbq_compat
 
     def __iter__(self):
         return self
@@ -99,7 +102,12 @@ class Machine(object):
                 self.ip += offset
 
         elif opcode == opcodes.BBQ:
-            self.push(chr(self.pop()))
+            v = self.pop()
+            if self.bbq_compat:
+                self.push('&#{};'.format(v))
+            else:
+                self.push(chr(v))
+
         else:
             self.push(opcode - 10)
 
@@ -168,9 +176,15 @@ class Machine(object):
     def run(self):
         """Execute the loaded Chicken program."""
 
-        for _ in self:
+        while self.step():
             pass
-        return self.look()
+
+        out = self.look()
+        if self.bbq_compat and '&#' in out:
+            import re
+            out = re.sub(r'&#(\d+);', lambda m: chr(int(m.group(1))), out)
+
+        return out
 
     def set(self, addr, value):
         l = len(self.stack)
