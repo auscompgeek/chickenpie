@@ -118,6 +118,16 @@ class Machine(object):
             self.stack[1] = input()
         return self.stack[1]
 
+    def get_output(self):
+        """Get the program's output, if the program has finished."""
+
+        out = self.look()
+        if self.bbq_compat and '&#' in out:
+            import re
+            out = re.sub(r'&#(\d+);', lambda m: chr(int(m.group(1))), out)
+
+        return out
+
     def has_loaded(self):
         """Check whether a Chicken program has been loaded."""
         return self.ip is not None
@@ -179,12 +189,7 @@ class Machine(object):
         while self.step():
             pass
 
-        out = self.look()
-        if self.bbq_compat and '&#' in out:
-            import re
-            out = re.sub(r'&#(\d+);', lambda m: chr(int(m.group(1))), out)
-
-        return out
+        return self.get_output()
 
     def set(self, addr, value):
         l = len(self.stack)
