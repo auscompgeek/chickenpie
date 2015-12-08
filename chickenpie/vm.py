@@ -122,7 +122,7 @@ class Machine(object):
         """Get the program's output, if the program has finished."""
 
         out = self.look()
-        if self.bbq_compat and '&#' in out:
+        if self.bbq_compat and isinstance(out, str) and '&#' in out:
             import re
             out = re.sub(r'&#(\d+);', lambda m: chr(int(m.group(1))), out)
 
