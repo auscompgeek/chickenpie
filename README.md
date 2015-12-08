@@ -3,7 +3,7 @@
 A Python implementation of the [Chicken][] esoteric programming language.
 
 This… mostly works. Of the example programs, deadfish doesn't work properly
-at all, and 99 chickens almost works. The others work fine.
+at all, and 99 Chickens works in BBQ compatibility mode. The others work fine.
 
 ## Usage
 In the project root:
@@ -21,7 +21,7 @@ breakpoint at line 38, last instruction: BBQ
 > py 1 + 1
 2
 > quit
-$ python -m chickenpie examples/99chickens.ch 9
+$ python -m chickenpie examples/99chickens.ch 9 True
 9 chickens
 8 chickens
 7 chickens
@@ -31,7 +31,7 @@ $ python -m chickenpie examples/99chickens.ch 9
 3 chickens
 2 chickens
 1 chicken
-Noneo chickens
+no chickens
 ```
 
 For all commands the debugger accepts, see its source code (and a list of the VM methods).
