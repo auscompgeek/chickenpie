@@ -65,7 +65,7 @@ def main():
                         lineno, opcodes.get_name(opcode)), file=sys.stderr)
                     break
             else:
-                print(machina.look())
+                print(machina.get_output())
 
         elif cmd == 'restart':
             machina = boot()
