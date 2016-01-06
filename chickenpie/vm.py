@@ -19,15 +19,16 @@ class Machine(object):
     ip = None  # type: int
     sp = -1
 
-    def __init__(self, input_=None, code=None, bbq_compat=False):
+    def __init__(self, input=None, code=None, bbq_compat=False, input_compat=False):
         self.stack = []
         self.push(self.stack)
-        self.push(input_)
+        self.push(input)
 
         if code:
             self.load_str(code)
 
         self.bbq_compat = bbq_compat
+        self.input_compat = input_compat
 
     def __iter__(self):
         return self
@@ -114,7 +115,7 @@ class Machine(object):
     def get_input(self):
         """Get input, either previously loaded or from stdin."""
 
-        if self.stack[1] is None:
+        if not self.input_compat and self.stack[1] is None:
             self.stack[1] = input()
         return self.stack[1]
 
