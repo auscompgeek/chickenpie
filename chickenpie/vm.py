@@ -19,7 +19,7 @@ class Machine(object):
     ip = None  # type: int
     sp = -1
 
-    def __init__(self, input=None, code=None, bbq_compat=False, input_compat=False):
+    def __init__(self, input=None, code=None, bbq_compat=True, input_compat=True):
         self.stack = []
         self.push(self.stack)
         self.push(input)
