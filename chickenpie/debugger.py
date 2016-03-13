@@ -87,7 +87,7 @@ def main():
             f = getattr(machina, cmd)
 
             try:
-                v = f(*map(eval, args.split()))
+                v = f(*eval(args + ','))
             except Exception:
                 traceback.print_exc()
 
