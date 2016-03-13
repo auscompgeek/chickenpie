@@ -23,8 +23,6 @@ def main():
 
     if len(sys.argv) >= 3:
         machina.load_input(sys.argv[2])
-        if len(sys.argv) == 4:
-            machina.bbq_compat = eval(sys.argv[3])
 
     print(machina.run())
 
