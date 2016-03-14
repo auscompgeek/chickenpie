@@ -52,9 +52,9 @@ class Machine(object):
 
             # JavaScript's + operator coerces to string if either operand is string
             if isinstance(a, str):
-                b = str(b)
+                b = stringify(b)
             elif isinstance(b, str):
-                a = str(a)
+                a = stringify(a)
 
             self.push(b + a)
 
@@ -217,3 +217,9 @@ class Machine(object):
         opcode = self.next_op()
         self.exec_op(opcode)
         return self.ip, opcode
+
+
+def stringify(o):
+    if o is None:
+        return 'undefined'
+    return str(o)
