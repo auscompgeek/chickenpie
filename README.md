@@ -2,8 +2,8 @@
 
 A Python implementation of the [Chicken][] esoteric programming language.
 
-This… mostly works. Of the example programs, deadfish doesn't work properly
-at all. The others work fine.
+This works for all the provided example problems, however, this may not be
+entirely compatible with all Chicken programs out in the wild.
 
 ## Usage
 In the project root:
@@ -32,6 +32,9 @@ $ python -m chickenpie examples/99chickens.ch 9
 2 chickens
 1 chicken
 no chickens
+
+$ python -m chickenpie examples/deadfish.ch iissiso
+ 289 
 ```
 
 For all commands the debugger accepts, see its source code (and a list of the VM methods).
