@@ -14,6 +14,8 @@ class Machine(object):
     - ip - instruction pointer
     - sp - stack pointer
     - stack
+    - bbq_compat - whether BBQ internally uses HTML encoding like chicken.js
+    - input_compat - False to dynamically read stdin when input is fetched
     """
 
     ip = None  # type: int
