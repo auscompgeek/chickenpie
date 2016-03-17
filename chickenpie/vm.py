@@ -14,17 +14,23 @@ class Machine(object):
     - ip - instruction pointer
     - sp - stack pointer
     - stack
+    - bbq_compat - whether BBQ internally uses HTML encoding like chicken.js
+    - input_compat - False to dynamically read stdin when input is fetched
     """
 
-    ip = None  # type: Optional[int]
+    ip = None  # type: int
     sp = -1
 
-    def __init__(self, input_=None, code=None):
+    def __init__(self, input=None, code=None, bbq_compat=True, input_compat=True):
         self.stack = []
         self.push(self.stack)
-        self.push(input_)
+        self.push(input)
+
         if code:
             self.load_str(code)
+
+        self.bbq_compat = bbq_compat
+        self.input_compat = input_compat
 
     def __iter__(self):
         return self
@@ -48,9 +54,9 @@ class Machine(object):
 
             # JavaScript's + operator coerces to string if either operand is string
             if isinstance(a, str):
-                b = str(b)
+                b = stringify(b)
             elif isinstance(b, str):
-                a = str(a)
+                a = stringify(a)
 
             self.push(b + a)
 
@@ -99,16 +105,31 @@ class Machine(object):
                 self.ip += offset
 
         elif opcode == opcodes.BBQ:
-            self.push(chr(self.pop()))
+            v = self.pop()
+            if self.bbq_compat:
+                self.push('&#{};'.format(v))
+            else:
+                self.push(chr(v))
+
         else:
             self.push(opcode - 10)
 
     def get_input(self):
         """Get input, either previously loaded or from stdin."""
 
-        if self.stack[1] is None:
+        if not self.input_compat and self.stack[1] is None:
             self.stack[1] = input()
         return self.stack[1]
+
+    def get_output(self):
+        """Get the program's output, if the program has finished."""
+
+        out = self.look()
+        if self.bbq_compat and isinstance(out, str) and '&#' in out:
+            import re
+            out = re.sub(r'&#(\d+);', lambda m: chr(int(m.group(1))), out)
+
+        return out
 
     def has_loaded(self):
         """Check whether a Chicken program has been loaded."""
@@ -168,9 +189,10 @@ class Machine(object):
     def run(self):
         """Execute the loaded Chicken program."""
 
-        for _ in self:
+        while self.step():
             pass
-        return self.look()
+
+        return self.get_output()
 
     def set(self, addr, value):
         l = len(self.stack)
@@ -197,3 +219,9 @@ class Machine(object):
         opcode = self.next_op()
         self.exec_op(opcode)
         return self.ip, opcode
+
+
+def stringify(o):
+    if o is None:
+        return 'undefined'
+    return str(o)
