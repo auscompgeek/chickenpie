@@ -48,6 +48,6 @@ For all commands the debugger accepts, see its source code (and a list of the VM
 [MIT](LICENSE).
 
 
-[Chicken]: http://torso.me/chicken
+[Chicken]: https://esolangs.org/wiki/Chicken
 [pychicken]: https://github.com/zjs/pychicken
 [chicken-php]: https://github.com/igorw/chicken-php
